@@ -18,6 +18,7 @@ const FreelancerRegisterModal = ({ isOpen, onClose, setWorkInfo, workInfo }: any
   }
 
   const onChangeCats = (cats: string[]) => {
+    console.log(cats)
     setWorkInfo({ ...workInfo, preferJobType: cats})
   }
 

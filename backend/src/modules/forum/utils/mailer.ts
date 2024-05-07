@@ -125,7 +125,8 @@ export const sendResetPasswordEmail = async (to: string, token: string): Promise
   <p>If you did not request any password resets, please ignore this email.</p>
   <p>Thanks,</p>
   <p><strong>JobSickers Application - best Vietnamese Job Marketplace</strong></p></div>`
-  await sendEmailFunc(to, html, subject, text)
+  const sendMailMetaData = await sendEmailFunc(to, html, subject, text)
+  console.log(sendMailMetaData)
 }
 
 /**
@@ -180,7 +181,7 @@ export const sendSuccessfulRegistration = async (to: string, token: string, name
   const subject = 'Email Verification'
   const verificationEmailUrl = `${config.clientUrl}/#/email-verification?token=${token}`
   const text = `Hi ${name},
-  Congratulations! Your account has been created. 
+  Congratulations! Your account has been created.
   You are almost there. Complete the final step by verifying your email at: ${verificationEmailUrl}
   Don't hesitate to contact us if you face any problems
   Regards,
@@ -205,7 +206,7 @@ export const sendAccountCreated = async (to: string, name: string): Promise<void
   const subject = 'Account Created Successfully'
   const loginUrl = `${config.clientUrl}/auth/login`
   const text = `Hi ${name},
-  Congratulations! Your account has been created successfully. 
+  Congratulations! Your account has been created successfully.
   You can now login at: ${loginUrl}
   Don't hesitate to contact us if you face any problems
   Regards,

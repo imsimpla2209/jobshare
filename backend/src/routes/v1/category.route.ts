@@ -7,7 +7,7 @@ const router: Router = express.Router()
 
 router
   .route('/')
-  .get(auth(), jobController.getAllCategories)
+  .get(jobController.getAllCategories)
   .post(auth(), validate(jobValidation.createCategory), jobController.createCategory)
 
 router

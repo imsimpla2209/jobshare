@@ -2,12 +2,14 @@
 import { Link, useNavigate } from 'react-router-dom'
 import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { postLogin } from 'src/api/auth-apis'
+import { loginGoogle, postLogin } from 'src/api/auth-apis'
 import { useAuth } from 'src/Components/Providers/AuthProvider'
 import { ResponseStatus } from 'src/api/constants'
 import toast from 'react-hot-toast'
 import { Input } from 'antd'
 import { EyeTwoTone, EyeInvisibleOutlined, UserOutlined, LockOutlined } from '@ant-design/icons'
+import { GoogleLogin } from 'react-google-login'
+import { gapi } from 'gapi-script'
 
 export default function LoginTemp() {
   const [user, setUser] = useState({ email: '', password: '' })
@@ -18,6 +20,30 @@ export default function LoginTemp() {
   const navigate = useNavigate()
 
   const { t } = useTranslation(['main'])
+
+const responseGoogle = async response => {
+  console.log('ss',response?.profileObj)
+  loginGoogle({
+    email: response?.profileObj?.email,
+  })
+    .then(result => {
+      if (result.data.user) {
+        localStorage.setItem('userType', result.data.user?.lastLoginAs || 'Freelancer')
+        result.data.user?.lastLoginAs === 'Freelancer' ? navigate('/find-work') : navigate('/home')
+        login(result.data?.tokens?.token, result.data?.user)
+        toast.success('Got you, bro!')
+      }
+    })
+    .catch(error => {
+      console.log(error)
+      if (error?.responseBody?.code === ResponseStatus?.UNAUTHORIZED) {
+        toast.error('Wrong username/email or password!')
+        return setErrorMessage('Wrong username/email or password!')
+      }
+      navigate('/sign-up', { state: { user: response?.profileObj } })
+
+    })
+}
 
   const getUserData = e => {
     const name = e.target.name
@@ -73,25 +99,6 @@ export default function LoginTemp() {
         setErrorMessage(error.message)
         toast.error(error.message)
       })
-  }
-
-  const googleLogin = () => {
-    // auth
-    //   .signInWithPopup(googleProvider)
-    //   .then((result) => {
-    //     console.log(result.user.displayName);
-    //     /** @type {firebaseApp.auth.OAuthCredential} */
-    //     var credential = result.credential;
-    //     // This gives you a Google Access Token. You can use it to access the Google API.
-    //     var token = credential.accessToken;
-    //     // The signed-in user info.
-    //     var user = result.user;
-    //     // ...
-    //     // navigate("/find-work");
-    //   })
-    //   .catch((error) => {
-    //     console.log(error);
-    //   });
   }
 
   return (
@@ -156,8 +163,17 @@ export default function LoginTemp() {
                     {t("Not you")}
                   </Link>
                 </div> */}
-                <div className="separator mt-4 col-8 mx-auto">or</div>
-                <div
+                <div className="separator mt-4 col-8 mx-auto d-flex justify-content-center align-items-center">or</div>
+                <div className="mt-2 col-8 mx-auto d-flex justify-content-center align-items-center">
+                  <GoogleLogin
+                    clientId="195590118934-evractfheid56o6s2l1ufe6voo2funji.apps.googleusercontent.com"
+                    buttonText="Login"
+                    onSuccess={responseGoogle}
+                    onFailure={responseGoogle}
+                    cookiePolicy={'single_host_origin'}
+                  />
+                </div>
+                {/* <div
                   className="google-btn  gap-2 mx-auto mt-3 rounded hitbtn-className col-sm-12"
                   style={{ height: '40px' }}
                   onClick={googleLogin}
@@ -165,7 +181,7 @@ export default function LoginTemp() {
                   <div className="google-icon-wrapper" style={{ marginRight: '1px' }}>
                     <img
                       className="google-icon me-2"
-                      src="https://upload.wikimedia.org/wikipedia/commons/5/53/Google_%22G%22_Logo.svg"
+                      src="https://th.bing.com/th/id/OIP.0eRUZcdA6VxiTjvM4MoR9gAAAA?w=214&h=214&c=7&r=0&o=5&dpr=2&pid=1.7"
                     />
                   </div>
                   <div className="text-justify ">
@@ -186,13 +202,6 @@ export default function LoginTemp() {
                   <div className="text-justify ">
                     <p className="text-center text-white pt-2">{t('Sign in with facebook')}</p>
                   </div>
-                </div>
-                {/* <div className="mb-5 d-grid gap-2 col-8 mx-auto mt-3 border border-dark rounded">
-                  <button className="btn bg-light " type="button">
-                    {" "}
-                    <img src={apple} className="apple-icon" />{" "}
-                    {t("sign in with apple")}
-                  </button>
                 </div> */}
                 <hr />
                 <div>

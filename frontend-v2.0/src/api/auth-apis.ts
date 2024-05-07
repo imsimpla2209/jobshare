@@ -1,8 +1,8 @@
 import { IUser } from "src/types/user";
 import { instance } from "./http";
 
-export const loginGoogle = () => {
-  return instance.get('auth/google');
+export const loginGoogle = (email) => {
+  return instance.post('auth/google', email);
 }
 
 export const loginFacebook = () => {

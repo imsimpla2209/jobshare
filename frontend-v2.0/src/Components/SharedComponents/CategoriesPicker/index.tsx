@@ -14,6 +14,12 @@ const CategoriesPicker = ({ handleChange, data, istakeValue = false, reset = fal
 
   const [selected, setSelected] = useState(data || [])
 
+  const handleSelect = (e) => {
+setSelected(e)
+console.log(e)
+handleChange(e)
+  }
+
   useEffect(() => {
     if (reset) {
       setSelected([])
@@ -31,8 +37,7 @@ const CategoriesPicker = ({ handleChange, data, istakeValue = false, reset = fal
         placeholder="Please select"
         defaultValue={[]}
         onChange={e => {
-          setSelected(e.map(({ value }) => value))
-          handleChange(e)
+          handleSelect(e)
         }}
         options={categories}
       />

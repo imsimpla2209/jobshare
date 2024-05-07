@@ -10,8 +10,17 @@ import { PayPalScriptProvider } from '@paypal/react-paypal-js'
 import { PAYPAL_CLIENT_ID } from './api/constants'
 import { SocketProvider } from './socket.io'
 import { ConfigProvider } from 'antd'
+import { gapi } from 'gapi-script'
 
 function App() {
+
+gapi.load('client:auth2', () => {
+  gapi.client.init({
+    clientId: '195590118934-evractfheid56o6s2l1ufe6voo2funji.apps.googleusercontent.com',
+    plugin_name: 'chat',
+  })
+})
+
   return (
     <HashRouter>
       <AuthProvider>

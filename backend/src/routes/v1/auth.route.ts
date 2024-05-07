@@ -9,12 +9,11 @@ router.post('/refresh-tokens', auth(), authController.refreshTokens)
 router.get('/me', auth(), authController.getMe)
 router.post('/register', validate(authValidation.register), authController.register)
 router.post('/login', validate(authValidation.login), authController.login)
-router.get(
+router.post(
   '/google',
   // validate(authValidation.oAuth),
-  passport.authenticate('google', {
-    scope: ['https://www.googleapis.com/auth/userinfo.profile', 'https://www.googleapis.com/auth/userinfo.email'],
-  })
+  // passport.authenticate('google')
+  authController.oAuthCallback
 )
 router.get(
   '/google/callback',

@@ -89,4 +89,21 @@ export const syncTrackingDataToBackend = (isSync = false, ) => {
   }
 }
 
-export { miniSearch, handleCacheData, db, handleGetCacheData }
+const generatePsw = () => {
+  function generateRandomPassword() {
+    const chars = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz#@!%&()/";
+    const length = 10; // Change this to your desired length
+    let randomPassword = '';
+    for (let i = 0; i < length; i++) {
+      const randomIndex = Math.floor(Math.random() * chars.length);
+      randomPassword += chars.substring(randomIndex, randomIndex + 1);
+    }
+    return randomPassword;
+  }
+
+  const password = generateRandomPassword();
+  return password
+
+}
+
+export { miniSearch, handleCacheData, db, handleGetCacheData, generatePsw }

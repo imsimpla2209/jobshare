@@ -12,6 +12,8 @@ export default function SignUpSecondForm({
   errorMessage,
   onUserTypeChange,
   goBack,
+  isWithSSO,
+  SSOData,
 }: any) {
   const { t } = useTranslation(['main'])
   const [validate, setValidate] = useState({
@@ -27,6 +29,13 @@ export default function SignUpSecondForm({
   const [fName, setFName] = useState<any>('')
   const [lName, setlName] = useState<any>('')
   const [loading, setLoading] = useState(false)
+
+  useEffect(() => {
+    if (isWithSSO) {
+      setFName(SSOData?.givenName)
+      setlName(SSOData?.familyName)
+  }
+  }, [isWithSSO])
 
   useEffect(() => {
     setuser({ ...usr, name: fName + ' ' + lName })
@@ -141,6 +150,7 @@ export default function SignUpSecondForm({
                 <input
                   type="text"
                   name="firstName"
+                  value={fName}
                   className="form-control  border-start-0 d-inline"
                   placeholder={t('First Name')}
                   aria-label="Input group example"
@@ -167,6 +177,7 @@ export default function SignUpSecondForm({
                 <input
                   type="text"
                   name="lastName"
+                  value={lName}
                   className="form-control border-start-0 d-inline"
                   placeholder={t('Last Name')}
                   aria-label="Input group example"
@@ -185,6 +196,7 @@ export default function SignUpSecondForm({
             <input
               type="text"
               name="username"
+              value={usr?.username || ''}
               className="form-control  border-start-0"
               placeholder={t('Username')}
               aria-label="Input group example"
@@ -221,6 +233,7 @@ export default function SignUpSecondForm({
             </span>
             <input
               type="password"
+              value={usr?.password || ''}
               name="password"
               className="form-control  border-start-0"
               placeholder={t('Password')}
@@ -308,7 +321,7 @@ export default function SignUpSecondForm({
               className="btn bg-jobsicker"
               loading={loading}
               style={{ height: '50px' }}
-              disabled={validate.password != null || !!validate.firstName || !!validate.lastName || !validate.terms}
+              disabled={!!validate.firstName || !!validate.lastName || !validate.terms}
               onClick={handleSignup}
             >
               {t('Continue with Email')}

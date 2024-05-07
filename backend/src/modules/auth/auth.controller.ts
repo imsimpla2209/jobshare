@@ -49,7 +49,8 @@ export const login = catchAsync(async (req: Request, res: Response) => {
 })
 
 export const oAuthCallback = catchAsync(async (req: Request, res: Response) => {
-  const { email } = req.user
+  const { email } = req.body
+  console.log('email', email)
   const user = await userService.getUserByEmail(email)
   const tokens = await tokenService.generateAuthTokens(user)
   await userService.setUserRefreshToken(user._id, tokens.refresh.token)

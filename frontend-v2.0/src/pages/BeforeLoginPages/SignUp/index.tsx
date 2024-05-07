@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import SignupForm from 'src/Components/BeforeLoginComponents/Signup Form'
 import SignUpSecondForm from 'src/Components/BeforeLoginComponents/Signup Second Form'
 import LoginHeader from '../../../Components/BeforeLoginComponents/LoginHeader'
@@ -9,10 +9,11 @@ import { useAuth } from 'src/Components/Providers/AuthProvider'
 import { EUserType } from 'src/utils/enum'
 import { registerAsFreelancer } from 'src/api/freelancer-apis'
 import { registerAsClient } from 'src/api/client-apis'
-import { useNavigate } from 'react-router-dom'
+import { useLocation, useNavigate } from 'react-router-dom'
 import FreelancerRegisterModal from 'src/Components/BeforeLoginComponents/FreelancerRegisterModal'
 import ClientRegisterModal from 'src/Components/BeforeLoginComponents/ClientRegisterModal'
 import toast from 'react-hot-toast'
+import { generatePsw } from 'src/utils/handleData'
 
 export enum ESignupStep {
   INITIAL = 0,
@@ -24,8 +25,12 @@ export default function SignUp() {
   const { login } = useAuth()
   const navigate = useNavigate()
   const [step, setStep] = useState<ESignupStep>(ESignupStep.INITIAL)
+  const location = useLocation()
+
   const [errorMessage, setErrorMessage] = useState('')
   const [workInfo, setWorkInfo] = useState<any>(null)
+  const [isWithSSO, setIsWithSSO] = useState<any>(false)
+  const [SSOData, setSSOData] = useState<any>(null)
   const [userInfo, setUserInfo] = useState<
     Omit<
       IUser,
@@ -49,6 +54,18 @@ export default function SignUp() {
     images: [],
     lastLoginAs: '',
   })
+
+  useEffect(() => {
+    if (location?.state?.user) {
+      setIsWithSSO(true)
+      setStep(ESignupStep.DETAIL)
+      setUserInfo({
+        email: location.state.user.email,
+        username: location.state.user.email?.split('@')[0],
+        password: generatePsw(),
+      })
+    } return () => {}
+  }, []);
 
   const signUpComplete = async () => {
     await register(userInfo)
@@ -107,10 +124,14 @@ export default function SignUp() {
           {step === ESignupStep.INITIAL ? (
             <SignupForm
               setEmail={onEmail}
-              email={userInfo.email}
+              emailText={userInfo.email}
               setStep={setStep}
               errorMessage={errorMessage}
               setErrorMessage={setErrorMessage}
+              setUser={setUserInfo}
+              setIsWithSSO={setIsWithSSO}
+              isWithSSO={isWithSSO}
+              setSSOData={setSSOData}
             />
           ) : (
             <SignUpSecondForm
@@ -120,6 +141,8 @@ export default function SignUp() {
               signUpComplete={signUpComplete}
               errorMessage={errorMessage}
               onUserTypeChange={onUserTypeChange}
+              isWithSSO={isWithSSO}
+              SSOData={location.state?.user || SSOData}
             />
           )}
           {userInfo.lastLoginAs === 'Freelancer' ? (
