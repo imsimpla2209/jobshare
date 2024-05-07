@@ -1,0 +1,50 @@
+{
+  "compilerOptions": {
+    "target": "ES2021",
+    "useDefineForClassFields": true,
+    "lib": ["ES2021", "DOM", "DOM.Iterable"],
+    "module": "ESNext",
+    "skipLibCheck": true,
+
+    /* Bundler mode */
+    "moduleResolution": "bundler",
+    "allowImportingTsExtensions": true,
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "noEmit": true,
+    "jsx": "react-jsx",
+
+    /* Linting */
+    "strict": false,
+    "noUnusedLocals": false,
+    "noUnusedParameters": false,
+    "noFallthroughCasesInSwitch": true,
+
+    "baseUrl": ".",
+    "paths": {
+      "src/*": ["./src/*", "./dist/*", ""],
+      "pages/*": ["src/pages/*"],
+      "Components/*": ["src/Components/*"],
+      "types/*": ["src/types/*"],
+      "public/*": ["public/*"],
+      "utils/*": ["src/utils/*"],
+      "Routes/*": ["src/Routes/*"],
+      "Network/*": ["src/Network/*"],
+      "Store/*": ["src/Store/*"],
+      "assets/*": ["src/assets/*"],
+      "constants/*": ["src/constants/*"],
+      "Context/*": ["src/Context/*"],
+      "hooks/*": ["src/hooks/*"],
+      "LayOut/*": ["src/LayOut/*"],
+      "libs/*": ["src/libs/*"],
+      "api/*": ["src/api/*"],
+      "socket.io": ["src/socket.io"],
+    }
+  },
+  "include": ["src", "src/index.tsx", "index.d.ts"],
+  "paths": {
+    "crypto": ["node_modules/crypto-browserify"],
+    "stream": ["node_modules/stream-browserify"]
+  },
+  "references": [{ "path": "./tsconfig.node.json" }]
+}

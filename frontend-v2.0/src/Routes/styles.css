@@ -1,0 +1,50 @@
+.background_general {
+  width: 100%;
+  margin: 0;
+  @extend %flex;
+  justify-content: center;
+  flex-direction: column;
+  overflow: auto;
+  height: 100vh;
+  /* background-image: linear-gradient(21deg, rgba(64, 83, 206, 0.3697003234675773) 68%, rgba(255, 206, 196, 0.5) 163%),
+    linear-gradient(163deg, rgba(49, 146, 170, 0.07944489965716128) 86%, rgba(239, 112, 138, 0.5) 40%),
+    linear-gradient(30deg, rgba(76, 79, 173, 0.6173675716587805) 22%, rgba(237, 106, 134, 0.5) 169%),
+    linear-gradient(48deg, rgba(152, 93, 240, 0.7323890641868473) 64%, rgba(247, 126, 132, 0.5) 43%) !important;
+  background-blend-mode: overlay, multiply, color, normal !important; */
+  background-color: #E1F1E7;
+/* background-image: linear-gradient(315deg, #f8ceec 0%, #a88beb 74%);
+background: #4e54c8; 
+  background: -webkit-linear-gradient(to right, #4e54c8, #8f94fb); 
+  background: linear-gradient(to right, #4e54c8, #8f94fb); */
+}
+
+.background_body {
+  /* background: linear-gradient(-45deg, #ee7752, #e73c7e, #23a6d5, #23d5ab); */
+  background: #8DA496;
+  background-size: 400% 400%;
+  animation: gradient 15s ease infinite;
+}
+
+@keyframes gradient {
+  0% {
+    background-position: 0% 50%;
+  }
+
+  50% {
+    background-position: 100% 50%;
+  }
+
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+.card-hover:hover {
+  box-shadow: 0 3px 6px 2px #b693e6;
+  transform: scale(1.005, 1.005);
+}
+
+.card-hover {
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+}

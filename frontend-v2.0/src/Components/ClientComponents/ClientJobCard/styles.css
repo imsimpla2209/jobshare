@@ -1,0 +1,14 @@
+.job-title-link {
+  font-size: 20px;
+  color: #222;
+}
+.job-title-link:hover {
+  color: #0E4623;
+}
+.cats {
+  background: #12582D;
+  
+}
+.card-job {
+  cursor: pointer;
+}
